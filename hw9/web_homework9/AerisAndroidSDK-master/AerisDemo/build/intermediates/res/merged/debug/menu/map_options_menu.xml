@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item
+	    android:icon="@android:drawable/ic_menu_save"
+	    android:showAsAction="ifRoom|withText"
+	    android:title="Save"
+	    android:id="@+id/menu_save"/>
+</menu>
+<!-- From: file:/C:/Users/sshie/AndroidStudioProjects/aeris-android-sdk/AerisMapsLibrary/res/menu/map_options_menu.xml --><!-- From: file:/C:/Users/BOB.BOB-PC/Desktop/web_homework9/AerisAndroidSDK-master/AerisDemo/build/intermediates/exploded-aar/com.hamweather/aeris-maps-library/1.1/res/menu/map_options_menu.xml -->

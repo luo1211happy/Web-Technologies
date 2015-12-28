@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true"
+         android:state_enabled="false"
+    	android:drawable="@drawable/btn_pause_disabled" />
+    <item android:state_checked="true"
+    	android:drawable="@drawable/btn_pause" />
+    <item android:state_checked="false"
+        android:state_enabled="false"
+		android:drawable="@drawable/btn_play_disabled"/>
+    <item android:state_checked="false"
+		android:drawable="@drawable/btn_play"/>
+    
+</selector><!-- From: file:/C:/Users/sshie/AndroidStudioProjects/aeris-android-sdk/AerisMapsLibrary/res/drawable/toggle_weather_anim.xml --><!-- From: file:/C:/Users/BOB.BOB-PC/Desktop/web_homework9/Forecast/app/build/intermediates/exploded-aar/com.hamweather/aeris-maps-library/1.1/res/drawable/toggle_weather_anim.xml -->

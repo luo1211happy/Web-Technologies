@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="even_tablerow">#FFFFFF</color>
+    <color name="odds_tablerow">#CBCBCB</color>
+    <color name="Black">#000000</color>
+    <color name="expand_button">#84ECE6</color>
+    <array name="colors">
+        <item>#FFDB6A</item>
+        <item>#A0E7FF</item>
+        <item>#FFC4EA</item>
+        <item>#C4FFA5</item>
+        <item>#FFBDB7</item>
+        <item>#EFFFB5</item>
+        <item>#BCBEFF</item>
+    </array>
+</resources>

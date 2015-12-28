@@ -1,0 +1,684 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+		<title>homework8</title>
+
+		<!-- Bootstrap -->
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+		<script src="http://openlayers.org/api/OpenLayers.js"></script><!--the openLayer.js seems like that it can not support html5-->
+		<script src="js/lib/jquery.js"></script>
+		<script src="js/dist/jquery.validate.js"></script>
+		<script src="js/dist/jquery.validate.min.js"></script>
+		<script src="js/lib/jquery.form.js"></script><!--have to add this js or it doesn't work-->
+		<script src="js/dist/additional-methods.min.js"></script>
+		<style type="text/css">
+			.search-block {
+				background-color: rgba(0, 0, 0, 0.2) !important;
+				padding: 2% 2%;
+				-moz-border-radius: 2px;
+				-webkit-border-radius: 2px;
+				border-radius: 2px;
+				-webkit-box-shadow: 1px 1px 3px #292929;
+				14
+				-moz-box-shadow: 1px 1px 3px #292929;
+				15
+				box-shadow: 1px 1px 3px #292929;
+			}
+			.transbutton {
+				background-color: Transparent;
+				background-repeat: no-repeat;
+				border: none;
+				cursor: pointer;
+				overflow: hidden;
+				outline: none;
+			}
+			.modal {
+				text-align: center;
+				padding: 0 !important;
+			}
+
+			.modal:before {
+				content: '';
+				display: inline-block;
+				height: 100%;
+				vertical-align: middle;
+				margin-right: -4px;
+			}
+
+			.modal-dialog {
+				display: inline-block;
+				text-align: left;
+				vertical-align: middle;
+			}
+		</style>
+	</head>
+	<body class="text-center" onload="init()">
+		<div class="container">
+			<!--don't use container-fluid class, it can block the center-block class-->
+			<h1 class="text-center">Forecast Search</h1>
+			<div class="row center-block">
+				<div class="search-block">
+					<form class="form-inline text-left" id="form1">
+						<div class="form-group" id="street-block">
+							<label>Street Address:<strong class="text-danger">*</strong></label>
+							<br>
+							<input type="text" class="form-control" id="street" name="street"  title="Please Enter Street address!" placeholder="Enter Street address" size="30%" style="width: 100%">
+							<br>
+						</div>
+						<div class="form-group" id="city-block">
+							<label>City:<strong class="text-danger">*</strong></label>
+							<br>
+							<input type="text" class="form-control" id="city" name="city" placeholder="Enter the city name" size="20%" style="width: 100%">
+							<br>
+						</div>
+						<div class="form-group" id="state-block">
+							<label>State:<strong class="text-danger">*</strong></label>
+							<br>
+							<select class="form-control" id="state" name="state" style="width: 100%">
+								<option value="">Select States</option>
+								<option value="AL">Alabama</option>
+								<option value="AK">Alaska</option>
+								<option value="AZ">Arizona</option>
+								<option value="AR">Arkansas</option>
+								<option value="CA">California</option>
+								<option value="CO">Colorado</option>
+								<option value="CT">Connecticut</option>
+								<option value="DE">Delaware</option>
+								<option value="DC">District Of Columbia</option>
+								<option value="FL">Florida</option>
+								<option value="GA">Georgia</option>
+								<option value="HI">Hawaii</option>
+								<option value="ID">Idaho</option>
+								<option value="IL">Illinois</option>
+								<option value="IN">Indiana</option>
+								<option value="IA">Iowa</option>
+								<option value="KS">Kansas</option>
+								<option value="KY">Kentucky</option>
+								<option value="LA">Louisiana</option>
+								<option value="ME">Maine</option>
+								<option value="MD">Maryland</option>
+								<option value="MA">Massachusetts</option>
+								<option value="MI">Michigan</option>
+								<option value="MN">Minnesota</option>
+								<option value="MS">Mississippi</option>
+								<option value="MO">Missouri</option>
+								<option value="MT">Montana</option>
+								<option value="NE">Nebraska</option>
+								<option value="NV">Nevada</option>
+								<option value="NH">New Hampshire</option>
+								<option value="NJ">New Jersey</option>
+								<option value="NM">New Mexico</option>
+								<option value="NY">New York</option>
+								<option value="NC">North Carolina</option>
+								<option value="ND">North Dakota</option>
+								<option value="OH">Ohio</option>
+								<option value="OK">Oklahoma</option>
+								<option value="OR">Oregon</option>
+								<option value="PA">Pennsylvania</option>
+								<option value="RI">Rhode Island</option>
+								<option value="SC">South Carolina</option>
+								<option value="SD">South Dakota</option>
+								<option value="TN">Tennessee</option>
+								<option value="TX">Texas</option>
+								<option value="UT">Utah</option>
+								<option value="VT">Vermont</option>
+								<option value="VA">Virginia</option>
+								<option value="WA">Washington</option>
+								<option value="WV">West Virginia</option>
+								<option value="WI">Wisconsin</option>
+								<option value="WY">Wyoming</option>
+							</select>
+							<br>
+						</div>
+						<div class="form-group">
+							<label>Degree:<strong class="text-danger">*</strong></label>
+							<br>
+							<label class="radio-inline">
+								<input type="radio" name="degree" checked="checked" id="fahrenheit">
+								Fahrenheit</label>
+							<label class="radio-inline">
+								<input type="radio" name="degree" id="celsius">
+								Celsius</label>
+						</div>
+						<div class="form-group pull-right">
+							<br>
+							<button type="submit" class="btn btn-primary" value="Search">
+								<span class="glyphicon glyphicon-search"></span> Search
+							</button>
+							<button type="button" class="btn btn-default" value="Clear" onclick="location.replace(location)">
+								<span class="glyphicon glyphicon-refresh"></span> Clear
+							</button>
+						</div>
+					</form>
+					<div class="text-right">
+						<label>Powered by <img src="images/forecast_logo.png" alt="forecast_logo" width="80"/></label>
+					</div>
+				</div>
+				<hr>
+			</div>
+			<div class="row center-block">
+				<ul id="myTab" class="nav nav-pills">
+					<li class="active">
+						<a href="#right" data-toggle="tab">Right Now</a>
+					</li>
+					<li>
+						<a href="#hours" data-toggle="tab">Next 24 Hours</a>
+					</li>
+					<li>
+						<a href="#days" data-toggle="tab">Next 7 Days</a>
+					</li>
+				</ul>
+				<div id="myTabContent" class="tab-content">
+					<div class="tab-pane fade in active" id="right">
+						<div class="container-fluid">
+							<div class="row">
+								<div class="col-md-6">
+									<div class="row" style="background-color: #d9534f">
+										<div class="col-md-6" >
+											<img src="images/clear.png" class="img-responsive center-block" width="50%" />
+										</div>
+										<div class="col-md-6">
+											<div class="row">
+												<label>weather summary</label>
+											</div>
+											<div class="row">
+												<table class="center-block" style="display: inline-block">
+													<tr class="text-center">
+														<td class="text-right"><label style="font-size: 70px">78</label></td>
+														<td class="text-left">
+														<p style="font-size: 20px;color: #fff;padding-bottom: 28px">
+															&deg; F
+														</p></td>
+													</tr>
+													<!-- <tr>
+													<td><label style="font-size: 70px">78<small style="font-size: 40%;bottom: -100px;">&deg; F</small></label></td>
+													</tr> -->
+												</table>
+											</div>
+											<div class="row">
+												<div class="center-block" style="display: inline-block;padding-top: 20px">
+													<span style="color:green">L:70&deg;</span>|<span style="color: blue">H:79&deg;</span>
+												</div>
+												<button class="transbutton pull-right"><img src="images/fb_icon.png" width="40px;" style="padding-bottom: 10px" />
+												</button>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="table-responsive">
+											<table class="table text-left" style="background-color: #fff">
+												<tr>
+													<td>Precipitation</td><td>ddddd</td>
+												</tr>
+												<tr class="danger">
+													<td>Chance of Rain</td><td>dddd</td>
+												</tr>
+												<tr>
+													<td>Wind Speed</td><td>ddddd</td>
+												</tr>
+												<tr class="danger">
+													<td>Dew Point</td><td>ddddd</td>
+												</tr>
+												<tr>
+													<td>Humidity</td><td>ddddd</td>
+												</tr>
+												<tr class="danger">
+													<td>Visibility</td><td>ddddd</td>
+												</tr>
+												<tr>
+													<td>Sunrise</td><td>ddddd</td>
+												</tr>
+												<tr class="danger">
+													<td>Sunset</td><td>ddddd</td>
+												</tr>
+											</table>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6 center-block" id="basicMap" style="height: 473px">
+
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="hours">
+						<div class="table-responsive" style="background-color: #fff">
+							<table class="table table-condensed" style="border: 1px solid #ddd !important;">
+								<tr class="bg-primary text-center" style="border: 1px solid #ddd !important;">
+									<td><label>Time</label></td>
+									<td><label>Summary</label></td>
+									<td><label>Cloud Cover</label></td>
+									<td><label>Temp(&deg;F)</label></td>
+									<td><label>View Details</label></td>
+								</tr>
+								<tr style="border: 1px solid #ddd !important;">
+									<td colspan="5"></td><!--use colspan to expand and collapse the contents,awesome!-->
+								</tr>
+								<tr class="text-center" style="border: 1px solid #ddd !important;">
+									<td>11:00 PM(time)</td>
+									<td><img src="images/clear.png" width="50px"/></td>
+									<td>0%(percentage)</td>
+									<td>70.28</td>
+									<td>
+									<button class="transbutton" data-toggle="collapse"  data-target="#collapse1">
+										<span class="glyphicon glyphicon-plus" style="color: #337ab7" ></span>
+									</button></td>
+								</tr>
+								<tr style="border: 1px solid #ddd !important;">
+									<td class="text-center"colspan="5">
+									<div id="collapse1" class="panel-collapse collapse">
+										<div class="panel-default panel-body" style="background-color: #ddd">
+											<div class="panel-default ">
+												<div class="table-responsive">
+													<table class="table table-condensed text-center">
+														<thead>
+															<tr style="background-color: #fff">
+																<td>Wind</td>
+																<td>Humidity</td>
+																<td>Visibility</td>
+																<td>Pressure</td>
+															</tr>
+														</thead>
+														<tbody>
+															<tr style="font-size: small;background-color: #ddd">
+																<td>4mph</td>
+																<td>83%</td>
+																<td>8.37mi</td>
+																<td>1012.6mb</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+									</div></td>
+								</tr>
+								<tr class="text-center">
+									<td>11:00 PM(time)</td>
+									<td><img src="images/clear.png" width="50px"/></td>
+									<td>0%(percentage)</td>
+									<td>70.28</td>
+									<td>
+									<button class="transbutton" data-toggle="collapse"  data-target="#collapse2">
+										<span class="glyphicon glyphicon-plus" style="color: #337ab7" ></span>
+									</button></td>
+								</tr>
+								<tr>
+									<td class="text-center"colspan="5">
+									<div id="collapse2" class="panel-collapse collapse">
+										<div class="panel-default panel-body" style="background-color: #ddd">
+											<div class="panel-default ">
+												<div class="table-responsive">
+													<table class="table table-condensed text-center">
+														<thead>
+															<tr style="background-color: #fff">
+																<td>Wind</td>
+																<td>Humidity</td>
+																<td>Visibility</td>
+																<td>Pressure</td>
+															</tr>
+														</thead>
+														<tbody>
+															<tr style="font-size: small;background-color: #ddd">
+																<td>4mph</td>
+																<td>83%</td>
+																<td>8.37mi</td>
+																<td>1012.6mb</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+									</div></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="days">
+						<div class="form-inline" style="background-color: #000">
+							<!--the background color have to be set by js when it is displayed in small screen-->
+							<div style="padding:0.5% 0% 0% 0%">
+								<div class="form-group" style="padding: 0% 0.5%" data-toggle="modal"
+								data-target="#myModal">
+									<table class="table table-condensed text-center" style="background-color: #428bca;-moz-border-radius: 10px;
+									-webkit-border-radius: 10px;
+									border-radius: 10px;">
+										<tr>
+											<td><label>Friday</label></td>
+										</tr>
+										<tr>
+											<td><label>Oct 16</label></td>
+										</tr>
+										<tr>
+											<td><img src="images/clear.png" width="80px" /></td>
+										</tr>
+										<tr>
+											<td><label>Min</label>
+											<br>
+											<label>Temp</label></td>
+										</tr>
+										<tr>
+											<td><label style="font-size: 30px">65&deg;</label></td>
+										</tr>
+										<tr>
+											<td><label>Max</label>
+											<br>
+											<label>Temp</label></td>
+										</tr>
+										<tr>
+											<td><label style="font-size: 30px">81&deg;</label></td>
+										</tr>
+									</table>
+								</div>
+								<div class="form-group" style="padding: 0% 0.5%" data-toggle="modal"
+								data-target="#myModal">
+									<table class="table table-condensed text-center" style="background-color: #d9534f;-moz-border-radius: 10px;
+									-webkit-border-radius: 10px;
+									border-radius: 10px;">
+										<tr>
+											<td><label>Friday</label></td>
+										</tr>
+										<tr>
+											<td><label>Oct 16</label></td>
+										</tr>
+										<tr>
+											<td><img src="images/clear.png" width="80px" /></td>
+										</tr>
+										<tr>
+											<td><label>Min</label>
+											<br>
+											<label>Temp</label></td>
+										</tr>
+										<tr>
+											<td><label style="font-size: 30px">65&deg;</label></td>
+										</tr>
+										<tr>
+											<td><label>Max</label>
+											<br>
+											<label>Temp</label></td>
+										</tr>
+										<tr>
+											<td><label style="font-size: 30px">81&deg;</label></td>
+										</tr>
+									</table>
+								</div>
+								<div class="form-group" style="padding: 0% 0.5%" data-toggle="modal"
+								data-target="#myModal">
+									<table class="table table-condensed text-center" style="background-color: #f0ad4e;-moz-border-radius: 10px;
+									-webkit-border-radius: 10px;
+									border-radius: 10px;">
+										<tr>
+											<td><label>Friday</label></td>
+										</tr>
+										<tr>
+											<td><label>Oct 16</label></td>
+										</tr>
+										<tr>
+											<td><img src="images/clear.png" width="80px" /></td>
+										</tr>
+										<tr>
+											<td><label>Min</label>
+											<br>
+											<label>Temp</label></td>
+										</tr>
+										<tr>
+											<td><label style="font-size: 30px">65&deg;</label></td>
+										</tr>
+										<tr>
+											<td><label>Max</label>
+											<br>
+											<label>Temp</label></td>
+										</tr>
+										<tr>
+											<td><label style="font-size: 30px">81&deg;</label></td>
+										</tr>
+									</table>
+								</div>
+								<div class="form-group" style="padding: 0% 0.5%" data-toggle="modal"
+								data-target="#myModal">
+									<table class="table table-condensed text-center" style="background-color: #A8C31B;-moz-border-radius: 10px;
+									-webkit-border-radius: 10px;
+									border-radius: 10px;">
+										<tr>
+											<td><label>Friday</label></td>
+										</tr>
+										<tr>
+											<td><label>Oct 16</label></td>
+										</tr>
+										<tr>
+											<td><img src="images/clear.png" width="80px" /></td>
+										</tr>
+										<tr>
+											<td><label>Min</label>
+											<br>
+											<label>Temp</label></td>
+										</tr>
+										<tr>
+											<td><label style="font-size: 30px">65&deg;</label></td>
+										</tr>
+										<tr>
+											<td><label>Max</label>
+											<br>
+											<label>Temp</label></td>
+										</tr>
+										<tr>
+											<td><label style="font-size: 30px">81&deg;</label></td>
+										</tr>
+									</table>
+								</div>
+								<div class="form-group" style="padding: 0% 0.5%" data-toggle="modal"
+								data-target="#myModal">
+									<table class="table table-condensed text-center" style="background-color: #b75cb7;-moz-border-radius: 10px;
+									-webkit-border-radius: 10px;
+									border-radius: 10px;">
+										<tr>
+											<td><label>Friday</label></td>
+										</tr>
+										<tr>
+											<td><label>Oct 16</label></td>
+										</tr>
+										<tr>
+											<td><img src="images/clear.png" width="80px" /></td>
+										</tr>
+										<tr>
+											<td><label>Min</label>
+											<br>
+											<label>Temp</label></td>
+										</tr>
+										<tr>
+											<td><label style="font-size: 30px">65&deg;</label></td>
+										</tr>
+										<tr>
+											<td><label>Max</label>
+											<br>
+											<label>Temp</label></td>
+										</tr>
+										<tr>
+											<td><label style="font-size: 30px">81&deg;</label></td>
+										</tr>
+									</table>
+								</div>
+								<div class="form-group" style="padding: 0% 0.5%"data-toggle="modal"
+								data-target="#myModal">
+									<table class="table table-condensed text-center" style="background-color: #FFC0CB;-moz-border-radius: 10px;-webkit-border-radius: 10px;border-radius: 10px;">
+										<tr>
+											<td><label>Friday</label></td>
+										</tr>
+										<tr>
+											<td><label>Oct 16</label></td>
+										</tr>
+										<tr>
+											<td><img src="images/clear.png" width="80px" /></td>
+										</tr>
+										<tr>
+											<td><label>Min</label>
+											<br>
+											<label>Temp</label></td>
+										</tr>
+										<tr>
+											<td><label style="font-size: 30px">65&deg;</label></td>
+										</tr>
+										<tr>
+											<td><label>Max</label>
+											<br>
+											<label>Temp</label></td>
+										</tr>
+										<tr>
+											<td><label style="font-size: 30px">81&deg;</label></td>
+										</tr>
+									</table>
+								</div>
+								<div class="form-group" style="padding: 0% 0.5%" data-toggle="modal"
+								data-target="#myModal">
+									<table class="table table-condensed text-center" style="background-color: #a51b83;-moz-border-radius: 10px;-webkit-border-radius: 10px;border-radius: 10px;">
+										<tr >
+											<td><label>Friday</label></td>
+										</tr>
+										<tr>
+											<td><label>Oct 16</label></td>
+										</tr>
+										<tr>
+											<td><img src="images/clear.png" width="80px"/></td>
+										</tr>
+										<tr>
+											<td><label>Min</label>
+											<br>
+											<label>Temp</label></td>
+										</tr>
+										<tr>
+											<td><label style="font-size: 30px">65&deg;</label></td>
+										</tr>
+										<tr>
+											<td><label>Max</label>
+											<br>
+											<label>Temp</label></td>
+										</tr>
+										<tr>
+											<td><label style="font-size: 30px">81&deg;</label></td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</div>
+						<div class="modal modal-vcenter fade" id="myModal" tabindex="-1" role="dialog"
+						aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close"
+										data-dismiss="modal" aria-hidden="true">
+											&times;
+										</button>
+										<h4 class="modal-title text-left" id="myModalLabel">Weather in Los Angeles on October 16(need set)</h4>
+									</div>
+									<div class="modal-body">
+										<div class="container-fluid">
+											<div class="row"><div class="col-md-12 text-center"><img src="images/clear_night.png" width="20%" /></div></div>
+											<div class="row"><div class="col-md-12 text-center"><h3>Friday:(need set)<span style="color: yellow">Mostly cloudy throughout the day</span></h3></div></div>
+											<div class="row">
+												<div class="col-sm-4 text-center"><h4>Sunrise Time</h4><small>07:40 AM(need set)</small></div>
+												<div class="col-sm-4 text-center"><h4>Sunset Time</h4><small>06:19 PM(need set)</small></div>
+												<div class="col-sm-4 text-center"><h4>Humidity</h4><small>80%(need set)</small></div>
+											</div>
+											<div class="row">
+												<div class="col-sm-4 text-center"><h4>Wind Speed</h4><small>3.98mph(need set)</small></div>
+												<div class="col-sm-4 text-center"><h4>Visibility</h4><small>7.22mi(need set)</small></div>
+												<div class="col-sm-4 text-center"><h4>Pressure</h4><small>1012.08mb(need set)</small></div>
+											</div>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default"
+										data-dismiss="modal">
+											Close
+										</button>
+									</div>
+								</div><!-- /.modal-content -->
+							</div><!-- /.modal -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" >
+			$.validator.addMethod("regular", function(value, element) {
+				return this.optional(element) || /^[A-Za-z\s]+$/.test(value.trim());
+			}, "Please enter a valid city address");
+			$.validator.addMethod("nospace", function(value, element) {
+				return value.trim() != "";
+			}, "No space please and don't leave it empty");
+			$("#form1").validate({
+				rules : {
+					street : {
+						required : true,
+						nospace : true
+					},
+					city : {
+						required : true,
+						regular : true
+					},
+					state : {
+						required : true,
+						nospace : true
+					}
+				},
+				errorPlacement : function(error, element) {
+					error.appendTo(element.parent());
+				},
+				messages : {
+					street : {
+						required : "Please enter the street address ",
+					},
+					city : {
+						required : "Please enter the city",
+					},
+					state : {
+						required : "Please select a state "
+					}
+				}
+			});
+			function init() {
+
+				//Center of map
+				var lat = 34.028668;
+				var lon = -118.286325;
+				var lonlat = new OpenLayers.LonLat(lon, lat);
+				var map = new OpenLayers.Map("basicMap");
+				// Create overlays
+				//  OSM
+				var mapnik = new OpenLayers.Layer.OSM();
+				var layer_cloud = new OpenLayers.Layer.XYZ("clouds", "http://${s}.tile.openweathermap.org/map/clouds/${z}/${x}/${y}.png", {
+					isBaseLayer : false,
+					opacity : 0.7,
+					sphericalMercator : true
+
+				});
+
+				var layer_precipitation = new OpenLayers.Layer.XYZ("precipitation", "http://${s}.tile.openweathermap.org/map/precipitation/${z}/${x}/${y}.png", {
+					isBaseLayer : false,
+					opacity : 0.7,
+					sphericalMercator : true
+				});
+
+				map.addLayers([mapnik, layer_precipitation, layer_cloud]);
+				map.setCenter(lonlat, 5);
+
+			}
+
+		</script>
+		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<!-- Include all compiled plugins (below), or include individual files as needed -->
+		<script src="js/bootstrap.min.js"></script>
+	</body>
+</html>
